@@ -7,6 +7,11 @@
 Licensed under the MIT License <http://opensource.org/licenses/MIT>.
 Copyright (c) 2013-2018 Niels Lohmann <http://nlohmann.me>.
 
+Changelog:
+  + Allow trailing comma, i.e. the comma in `[1,]` and `{"a": 1,}`.
+
+The above changes: Copyright (C) 2019 Giumo Clanjor (哆啦比猫/兰威举) <cjxgm2@gmail.com>
+
 Permission is hereby  granted, free of charge, to any  person obtaining a copy
 of this software and associated  documentation files (the "Software"), to deal
 in the Software  without restriction, including without  limitation the rights
@@ -3353,6 +3358,7 @@ class parser
                     if (last_token == token_type::value_separator)
                     {
                         get_token();
+                        if (last_token == token_type::end_object) return;   // trailing comma
                         continue;
                     }
 
@@ -3427,6 +3433,7 @@ class parser
                     if (last_token == token_type::value_separator)
                     {
                         get_token();
+                        if (last_token == token_type::end_array) return;   // trailing comma
                         continue;
                     }
 
@@ -3586,6 +3593,7 @@ class parser
                     if (last_token == token_type::value_separator)
                     {
                         get_token();
+                        if (last_token == token_type::end_object) return true;   // trailing comma
                         continue;
                     }
 
@@ -3619,6 +3627,7 @@ class parser
                     if (last_token == token_type::value_separator)
                     {
                         get_token();
+                        if (last_token == token_type::end_array) return true;   // trailing comma
                         continue;
                     }
 
