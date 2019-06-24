@@ -9,6 +9,7 @@ Copyright (c) 2013-2018 Niels Lohmann <http://nlohmann.me>.
 
 Changelog:
   + Allow trailing comma, i.e. the comma in `[1,]` and `{"a": 1,}`.
+  + Support comments. `#` starts a line comment.
 
 The above changes: Copyright (C) 2019 Giumo Clanjor (哆啦比猫/兰威举) <cjxgm2@gmail.com>
 
@@ -3029,10 +3030,17 @@ scan_number_done:
 
     token_type scan()
     {
-        // read next character and ignore whitespace
+        // read next character and ignore whitespace and comments
         do
         {
             get();
+            if (current == '#')
+            {
+                do
+                {
+                    get();
+                } while (current != '\n' && current != std::char_traits<char>::eof());
+            }
         }
         while (current == ' ' or current == '\t' or current == '\n' or current == '\r');
 
